@@ -7,12 +7,31 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
     <h1>Movie Post Generator Tool</h1>
-    <label for="movieUrl">Enter Movie URL:</label>
-    <input type="text" id="movieUrl" placeholder="Paste RogMovies URL here">
-    <button onclick="generatePost()">Generate</button>
+    <input type="text" id="movieUrl" placeholder="Enter Movie URL">
+    <button onclick="scrapeMovie()">Scrape</button>
     <textarea id="output" readonly></textarea>
     <button onclick="copyToClipboard()">Copy HTML</button>
-    <script src="script.js"></script>
+
+    <script>
+        async function scrapeMovie() {
+            let url = document.getElementById("movieUrl").value;
+            let apiURL = `https://your-api.onrender.com/scrape?url=${encodeURIComponent(url)}`;
+
+            let response = await fetch(apiURL);
+            let data = await response.json();
+
+            document.getElementById("output").value = data.html;
+        }
+
+        function copyToClipboard() {
+            let output = document.getElementById("output");
+            output.select();
+            document.execCommand("copy");
+            alert("Copied to clipboard!");
+        }
+    </script>
+
 </body>
 </html>
